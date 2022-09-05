@@ -1,4 +1,5 @@
 import numpy as np
+import math
 print("///////////////////////////////////////////")
 print("To use PMI dating and Colonization Calculations - ")
 print("enter the temperature numeral, ADD A SPACE, and ")
@@ -164,11 +165,20 @@ while(True):
 
 
     elif (answer == "b"):
+        AOIorPOI = input("Angle of Impact(a) or Point Of Origin(p) --> ").lower()
         try:
-            width = input("Width --> ")
-            length = input("Length --> ")
-            print("arcsin(" + width + "/" + length + ")")
-            print("Angle Of Impact: "  )
+            if (AOIorPOI == "a"):
+                length = input("Length --> ")
+                width = input("Width --> ")
+                print("Proof: arcsin(" + width + "/" + length + ")")
+                print("Angle Of Impact: " + str( round(np.arcsin(float(width)/float(length))*(180/np.pi),2) ))
+            elif(AOIorPOI == "p"):
+                angle = input("Angle of Impact --> ")
+                distance = input("Distance From Point Of Convergence --> ")
+                print("Proof: Tan(" + angle + ") * " + distance)
+                print("Point of Origin: " + str( round(np.tan(float(angle)*(np.pi/180)) * float(distance),2) ))
+
+
 
 
 
