@@ -1,3 +1,4 @@
+import numpy as np
 print("///////////////////////////////////////////")
 print("To use PMI dating and Colonization Calculations - ")
 print("enter the temperature numeral, ADD A SPACE, and ")
@@ -160,6 +161,24 @@ while(True):
             print("---Inputs Are Not Valid Choices---")
         except (IndexError):
             print("---Missing A Part Of The Input (For Example: Missing Unit of Temperature)---")
+
+
+    elif (answer == "b"):
+        try:
+            width = input("Width --> ")
+            length = input("Length --> ")
+            print("arcsin(" + width + "/" + length + ")")
+            print("Angle Of Impact: "  )
+
+
+
+
+
+        except (ValueError):
+            print("---Inputs Are Not Valid Choices---")
+
+
+
 
 
 
