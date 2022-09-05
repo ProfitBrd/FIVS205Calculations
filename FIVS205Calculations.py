@@ -4,7 +4,7 @@ print("enter the temperature numeral, ADD A SPACE, and ")
 print("then enter the degree type (C or F). For Example:\n\nEnter the Body Temperature: --> 23.93 c\nEnter the Ambient Temperature: --> 70 f\nOR\nEnter the average temperature --> 30 c\nEnter the Threshold --> 70 f")
 print("///////////////////////////////////////////")
 print("")
-
+#TODO: Edit above
 
 def convertToCelciusReturnStr(inputArray):
     if (inputArray[1] == "f"):
@@ -23,7 +23,7 @@ def convertToCelciusReturnFloat(inputArray):
 
 while(True):
     print("")
-    answer = input("Eye Potassium --- Type \"k\"\nPMI (Liver, Rectal, etc.) --- Type \"p\"\nExit --- Type \"0\"\n--> ")
+    answer = input("Eye Potassium --- Type \"k\"\nPMI (Liver, Rectal, etc.) --- Type \"p\"\nTime of Colonization --- Type \"c\"\nEstimated Height --- Type \"h\"\nExit --- Type \"0\"\n--> ")
     answer = answer.lower()
 
     if answer == "0":
@@ -119,44 +119,47 @@ while(True):
 
 
     elif (answer == "c"):
-        typeOfQuestion = input("Degree Time from a Table (t) or Average Temperature (a) --> ").lower()
-        if typeOfQuestion == "a":
-            avgTempsList = []
-            avgTempsTotal = 0
-            numOfTemps = int(input("How many average temperatures do you have to enter --> "))
-            for i in range (numOfTemps):
-                avgTemps = list(map(str, input("Enter the average temperature (with degree type) --> ").split()))
-                if avgTemps[1] == "f":
-                    avgTemps[0] = (float(avgTemps[0]) - 32) * (5 / 9)
-                avgTempsList.append(float(avgTemps[0]))
-                avgTempsTotal += float(avgTemps[0])
+        typeOfQuestion = input("Degree Time from a Table(t) or Average Temperature(a) --> ").lower()
+        try:
+            if typeOfQuestion == "a":
+                avgTempsList = []
+                numOfTemps = int(input("How many average temperatures do you have to enter --> "))
+                for i in range (numOfTemps):
+                    avgTempsList.append( convertToCelciusReturnFloat( list(map(str, input("Enter the average temperature (with degree type) --> ").split()))))
 
-            degreeThreshold = list(map(str, input("Enter the Threshold (with degree type) --> ").split()))
-            if (degreeThreshold[1] == "f"):
-                degreeThreshold[0] = (float(degreeThreshold[0]) - 32) * (5 / 9)
+                avgTempsTotal = sum(avgTempsList)
+
+                degreeThreshold = convertToCelciusReturnFloat( list(map(str, input("Enter the Threshold (with degree type) --> ").split())))
+
+                print("")
+                answerProofString = ""
+                for i in range(numOfTemps - 1):
+                    answerProofString += str(round(avgTempsList[i],2)) + "-" + str(degreeThreshold) + "+"
+                answerProofString += str(round(avgTempsList[numOfTemps-1],2)) + "-" + str(degreeThreshold) + "="
+
+                print(answerProofString)
+                DD = round(avgTempsTotal-(numOfTemps*degreeThreshold),2)
+                DH = round(DD*24,2)
+                print("Degree DAYS: " + str(DD))
+                print("Degree HOURS: " + str(DH))
+
+            elif typeOfQuestion == "t":
+
+                averageTemp = convertToCelciusReturnFloat( list(map(str, input("Average Temperature --> ").split())) )
+                thresholdTemp = convertToCelciusReturnFloat( list(map(str, input("Threshold Temperature --> ").split())) )
+                #TODO: add error checking for putting a string into the array below
+                phaseTimes = list(map(float, input("List relevant stages separated by a space (in hours) --> ").split())) #TODO: state in try-catch block that if they enter a string (XX) that they should reread the instructions
+                #TODO: Add proof
+                print("Degree DAYS: " + str( round((averageTemp-thresholdTemp)*(sum(phaseTimes)/24),2) )   )
+                print("Degree HOURS: " + str( round((averageTemp-thresholdTemp)*(sum(phaseTimes)),  2) )   )
+
             else:
-                degreeThreshold[0] = float(degreeThreshold[0])
+                print("---Input Is Not A Valid Choice---")
 
-            #TODO: Round numbers in the proof
-            answerProofString = ""
-            for i in range(numOfTemps - 1):
-                answerProofString += str(avgTempsList[i]) + "-" + str(degreeThreshold[0]) + "+"
-            answerProofString += str(avgTempsList[numOfTemps-1]) + "-" + str(degreeThreshold[0]) + "="
-
-            print(answerProofString)
-            DD = round(avgTempsTotal-(numOfTemps*degreeThreshold[0]),2)
-            DH = round(DD*24,2)
-            print("Degree DAYS: " + str(DD))
-            print("Degree HOURS: " + str(DH))
-
-        elif typeOfQuestion == "t":
-            averageTemp = convertToCelciusReturnFloat( list(map(str, input("Average Temperature --> ").split())) )
-            thresholdTemp = convertToCelciusReturnFloat( list(map(str, input("Threshold Temperature --> ").split())) )
-            #TODO: add error checking for putting a string into the array below
-            phaseTimes = list(map(float, input("List relevant stages separated by a space (in hours) --> ").split())) #TODO: state in try-catch block that if they enter a string (XX) that they should reread the instructions
-            #TODO: Add proof
-            print("Degree DAYS: " + str( round((averageTemp-thresholdTemp)*(sum(phaseTimes)/24),2) )   )
-            print("Degree HOURS: " + str( round((averageTemp-thresholdTemp)*(sum(phaseTimes)),  2) )   )
+        except (ValueError):
+            print("---Inputs Are Not Valid Choices---")
+        except (IndexError):
+            print("---Missing A Part Of The Input (For Example: Missing Unit of Temperature)---")
 
 
 
