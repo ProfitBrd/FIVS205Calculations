@@ -1,4 +1,5 @@
 import numpy as np
+from cmath import phase
 import math
 print("///////////////////////////////////////////")
 print("To use PMI dating and Colonization Calculations - ")
@@ -29,7 +30,7 @@ while(True):
     answer = answer.lower()
 
     if answer == "0":
-        break;
+        break
 
     elif answer == "p":
         try:
@@ -136,10 +137,10 @@ while(True):
                 print("")
                 answerProofString = ""
                 for i in range(numOfTemps - 1):
-                    answerProofString += str(round(avgTempsList[i],2)) + "-" + str(degreeThreshold) + "+"
-                answerProofString += str(round(avgTempsList[numOfTemps-1],2)) + "-" + str(degreeThreshold) + "="
+                    answerProofString += "(" + str(round(avgTempsList[i],2)) + "-" + str(degreeThreshold) +")" + "+"
+                answerProofString += "(" + str(round(avgTempsList[numOfTemps-1],2)) + "-" + str(degreeThreshold) + ")"
 
-                print(answerProofString)
+                print("Proof for Degree DAYS: " + answerProofString)
                 DD = round(avgTempsTotal-(numOfTemps*degreeThreshold),2)
                 DH = round(DD*24,2)
                 print("Degree DAYS: " + str(DD))
@@ -149,9 +150,13 @@ while(True):
 
                 averageTemp = convertToCelciusReturnFloat( list(map(str, input("Average Temperature --> ").split())) )
                 thresholdTemp = convertToCelciusReturnFloat( list(map(str, input("Threshold Temperature --> ").split())) )
-                #TODO: add error checking for putting a string into the array below
-                phaseTimes = list(map(float, input("List relevant stages separated by a space (in hours) --> ").split())) #TODO: state in try-catch block that if they enter a string (XX) that they should reread the instructions
-                #TODO: Add proof
+                phaseTimes = list(map(float, input("List relevant stages separated by a space (in hours) --> ").split()))
+
+                print("Proof for Degree DAYS: (" + str(round(averageTemp,3)) + " - " + str(round(thresholdTemp,3)) + ") * (", end="")
+                for i in range (len(phaseTimes) - 1):
+                    print(str(phaseTimes[i]) + " + ",end="")
+                print(str(phaseTimes[len(phaseTimes)-1]) + ")")
+
                 print("Degree DAYS: " + str( round((averageTemp-thresholdTemp)*(sum(phaseTimes)/24),2) )   )
                 print("Degree HOURS: " + str( round((averageTemp-thresholdTemp)*(sum(phaseTimes)),  2) )   )
 
